@@ -28,6 +28,5 @@ public class Race implements Serializable {
         this.name = race.name;
         this.track = race.track;
         this.drivers = race.drivers.stream().map(Driver::new).collect(Collectors.toList());
-
     }
 }

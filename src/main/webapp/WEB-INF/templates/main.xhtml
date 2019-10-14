@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>Tracks</title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <h:link class="navbar-brand" outcome="index.xhtml" value="Tracks"/>
+
+            <div class="collapse navbar-collapse" id="navbarsExample04">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link outcome="track_list.xhtml" value="Tracks" class="nav-link"/>
+                    </li>
+                    <li class="nav-item">
+                        <h:link outcome="race_list.xhtml" value="Races" class="nav-link"/>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <section>
+            <ui:insert name="content"/>
+        </section>
+    </h:body>
+</f:view>
+</html>

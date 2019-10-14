@@ -1,13 +1,17 @@
-package pl.tracks.view.converter;
+package pl.tracks.track.view.converter;
 
 import pl.tracks.race.RaceService;
 import pl.tracks.track.model.Track;
 
+import javax.enterprise.context.Dependent;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
+@FacesConverter(forClass = Track.class, managed = true)
+@Dependent
 public class TrackConverter implements Converter<Track> {
 
     private RaceService service;

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <h:dataTable value="#{raceList.races}" var="race" class="table">
+            <h:column>
+                <f:facet name="header">id</f:facet>
+                <h:outputText value="#{race.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nazwa wyścigu</f:facet>
+                <h:outputText value="#{race.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">data</f:facet>
+                <h:outputText value="#{race.date}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tor</f:facet>
+                <h:outputText value="#{race.track.name}"/>
+            </h:column>
+            <h:column>
+                <h:link outcome="race_edit.xhtml" value="Edytuj" class="btn btn-outline-info">
+                    <f:param name="race" value="#{race.id}"/>
+                </h:link>
+            </h:column>
+            <h:column>
+                <h:form>
+                    <h:commandButton value="Usuń" action="#{raceList.removeRace(race)}"
+                                     class="btn btn-outline-danger"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:link outcome="race_edit.xhtml" value="Dodaj tor" class="btn btn-outline-info mx-4"/>
+        <h:link outcome="race_create.xhtml" value="Dodaj tor 2" class="btn btn-outline-info mx-4"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <h:dataTable value="#{trackList.tracks}" var="track" class="table">
+            <h:column>
+                <f:facet name="header">id</f:facet>
+                <h:outputText value="#{track.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nazwa toru</f:facet>
+                <h:outputText value="#{track.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Szerokość</f:facet>
+                <h:outputText value="#{track.latitude}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Długość</f:facet>
+                <h:outputText value="#{track.longitude}"/>
+            </h:column>
+            <h:column>
+                <h:link outcome="track_edit.xhtml" value="Edytuj" class="btn btn-outline-info">
+                    <f:param name="track" value="#{track.id}"/>
+                </h:link>
+            </h:column>
+            <h:column>
+                <h:form>
+                    <h:commandButton value="Usuń" action="#{trackList.removeTrack(track)}"
+                                     class="btn btn-outline-danger"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:link outcome="track_edit.xhtml" value="Dodaj tor" class="btn btn-outline-info mx-4"/>
+        <h:link outcome="track_create.xhtml" value="Dodaj tor 2" class="btn btn-outline-info mx-4"/>
+    </ui:define>
+</ui:composition>

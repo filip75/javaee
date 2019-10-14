@@ -1,16 +1,13 @@
 package pl.tracks.track.model;
 
 import lombok.*;
-import pl.tracks.race.model.Race;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Track implements Serializable {
@@ -18,13 +15,18 @@ public class Track implements Serializable {
     private String name;
     private double latitude;
     private double longitude;
-    private List<Race> races;
+
+    public Track() {
+        id = 0;
+        name = "";
+        latitude = 0.0;
+        longitude = 0.0;
+    }
 
     public Track(Track track) {
         this.id = track.id;
         this.name = track.name;
         this.latitude = track.latitude;
         this.longitude = track.longitude;
-        this.races = track.races.stream().map(Race::new).collect(Collectors.toList());
     }
 }
