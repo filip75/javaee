@@ -1,0 +1,31 @@
+<form #trackForm="ngForm" *ngIf="track">
+  <tr>
+    <td>
+      <label for="name">Nazwa:</label>
+    </td>
+    <td>
+      <input type="text" id="name" name="name" [(ngModel)]="track.name"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="latitude">Szerokość:</label>
+    </td>
+    <td>
+      <input type="text" id="latitude" name="latitude" [(ngModel)]="track.latitude"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="longitude">Długość:</label>
+    </td>
+    <td>
+      <input type="text" id="longitude" name="longitude" [(ngModel)]="track.longitude"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button type="button" (click)="save()" class="btn btn-outline-info">Zapisz</button>
+    </td>
+  </tr>
+</form>

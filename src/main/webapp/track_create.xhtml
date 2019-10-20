@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <h:form  styleClass="m-4">
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Nazwa" for="name"/>
+                <h:inputText id="name" value="#{trackCreate.track.name}"/>
+                <h:message for="name"/>
+
+                <h:outputLabel value="długość" for="latitude"/>
+                <h:inputText id="latitude" value="#{trackCreate.track.latitude}">
+                    <f:convertNumber minFractionDigits="2" />
+                </h:inputText>
+                <h:message for="latitude"/>
+
+                <h:outputLabel value="szerokość" for="latitude"/>
+                <h:inputText id="longitude" value="#{trackCreate.track.longitude}">
+                    <f:convertNumber minFractionDigits="2" />
+                </h:inputText>
+                <h:message for="latitude"/>
+                <h:commandButton value="Zapisz" action="#{trackCreate.saveTrack}" styleClass="btn btn-outline-info"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
