@@ -21,7 +21,6 @@ public class RaceService {
     private void init() {
         tracks.add(new Track(1, "Silverstone", 52.074, -1.017));
         tracks.add(new Track(2, "Monza", 45.580, 9.273));
-//        tracks.add(new Track());
 
         Race silverstone2019 = new Race(1,
                 LocalDate.of(2019, Calendar.JUNE, 21),
@@ -82,6 +81,9 @@ public class RaceService {
 
 
     public synchronized void saveRace(Race race) {
+        if (race.getDrivers() == null) {
+            race.setDrivers(new ArrayList<>());
+        }
         if (race.getId() != 0) {
             races.removeIf(r -> r.getId() == race.getId());
             races.add(race);

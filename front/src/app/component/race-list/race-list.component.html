@@ -1,0 +1,25 @@
+<table class="table">
+  <tr>
+
+    <th>id</th>
+    <th>Data</th>
+    <th>Nazwa</th>
+    <th>Tor</th>
+    <th>Edytuj</th>
+    <th>Usuń</th>
+  </tr>
+  <tr *ngFor="let race of races | async">
+    <td>{{race.id}}</td>
+    <td>{{race.date}}</td>
+    <td>{{race.name}}</td>
+    <td>{{race.track.name}}</td>
+    <td>
+      <button class="btn btn-outline-info mx-2" [routerLink]="['/races', race.id, 'edit']">Edytuj</button>
+    </td>
+    <td>
+      <button (click)="remove(race)" class="btn btn-outline-danger mx-2">Usuń</button>
+    </td>
+  </tr>
+</table>
+<button class="btn btn-outline-info mx-2" [routerLink]="['/races', 'create']">Dodaj</button>
+

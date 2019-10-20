@@ -28,7 +28,6 @@ export class TrackService {
       return this.http.put(`api/tracks/${track.id}`, track);
     } else {
       return this.http.post('api/tracks', track);
-
     }
   }
 }

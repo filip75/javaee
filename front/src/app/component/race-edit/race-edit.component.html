@@ -1,0 +1,35 @@
+<form #raceForm="ngForm" *ngIf="race">
+  <tr>
+    <td>
+      <label for="name">Nazwa:</label>
+    </td>
+    <td>
+      <input type="text" id="name" name="name" [(ngModel)]="race.name"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="latitude">Dara:</label>
+    </td>
+    <td>
+      <input type="date" id="latitude" name="latitude" [(ngModel)]="race.date"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="track">Tor:</label>
+    </td>
+    <td>
+      <select [(ngModel)]="race.track" id="track" name="track" [compareWith]="compareTracks">
+        <option *ngFor="let track of availableTracks" [ngValue]="track">
+          {{track.name}}
+        </option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button type="button" (click)="save()" class="btn btn-outline-info">Zapisz</button>
+    </td>
+  </tr>
+</form>
