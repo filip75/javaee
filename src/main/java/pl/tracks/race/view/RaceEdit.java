@@ -29,7 +29,7 @@ public class RaceEdit implements Serializable {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         race = new Race();
     }
 
@@ -42,6 +42,6 @@ public class RaceEdit implements Serializable {
     }
 
     public List<Track> getAvailableTracks() {
-        return service.findAllTracks();
+        return service.findAllTracks(0, 2);
     }
 }

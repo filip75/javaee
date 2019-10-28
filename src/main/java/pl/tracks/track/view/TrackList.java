@@ -19,7 +19,7 @@ public class TrackList {
     }
 
     public List<Track> getTracks() {
-        return service.findAllTracks();
+        return service.findAllTracks(0,2);
     }
 
     public String removeTrack(Track track) {

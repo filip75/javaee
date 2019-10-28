@@ -23,7 +23,7 @@ export class RaceEditComponent implements OnInit {
     } else {
       this.service.findRace(Number(id)).subscribe(t => this.race = t);
     }
-    this.service.findAllTracks().subscribe(tracks => this.availableTracks = tracks)
+    this.service.findAllTracks().subscribe(tracks => this.availableTracks = tracks._embedded["tracks"])
   }
 
   save() {

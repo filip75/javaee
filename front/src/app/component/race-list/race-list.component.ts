@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
 import {Race} from "../../model/race";
 import {RaceService} from "../../service/race.service";
 
@@ -10,13 +9,13 @@ import {RaceService} from "../../service/race.service";
 })
 export class RaceListComponent implements OnInit {
 
-  races: Observable<Race[]>;
+  races: Race[];
 
   constructor(private service: RaceService) {
   }
 
   ngOnInit() {
-    this.races = this.service.findAllRaces();
+    this.service.findAllRaces().subscribe(value => this.races = value._embedded["races"]);
   }
 
   remove(race: Race) {

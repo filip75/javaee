@@ -19,7 +19,7 @@ public class RaceList {
     }
 
     public List<Race> getRaces() {
-        return service.findAllRaces();
+        return service.findAllRaces(0, 2);
     }
 
     public String removeRace(Race race) {

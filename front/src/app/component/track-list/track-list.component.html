@@ -7,7 +7,7 @@
     <th>Edytuj</th>
     <th>Usuń</th>
   </tr>
-  <tr *ngFor="let track of tracks | async">
+  <tr *ngFor="let track of tracks ">
     <td>{{track.id}}</td>
     <td>{{track.name}}</td>
     <td>{{track.latitude}}</td>
@@ -20,5 +20,7 @@
     </td>
   </tr>
 </table>
+
+<button class="btn btn-outline-info mx-2" (click)="first()">pierwsza</button>
 <button class="btn btn-outline-info mx-2" [routerLink]="['/tracks', 'create']">Dodaj</button>
 

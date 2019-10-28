@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
 import {Track} from "../../model/track";
 import {TrackService} from "../../service/track.service";
+import {Link} from "../../model/link";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-track-list',
@@ -10,16 +11,25 @@ import {TrackService} from "../../service/track.service";
 })
 export class TrackListComponent implements OnInit {
 
-  tracks: Observable<Track[]>;
+  tracks: Track[];
+  links: Map<String, Link>;
 
-  constructor(private service: TrackService) {
+  constructor(private service: TrackService, private router: Router) {
   }
 
   ngOnInit() {
-    this.tracks = this.service.findAllTracks();
+    this.service.findAllTracks().subscribe(v => {
+      this.tracks = v._embedded["tracks"];
+      this.links = v._links;
+    });
   }
 
   remove(track: Track) {
     this.service.removeTrack(track).subscribe(() => this.ngOnInit());
+  }
+
+  first() {
+    console.log(this.links["first"]);
+    this.router.navigateByUrl(this.links["first"]);
   }
 }

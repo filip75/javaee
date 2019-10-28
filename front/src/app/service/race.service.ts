@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Track} from "../model/track";
 import {Race} from "../model/race";
+import {EmbeddedResource} from "../model/embedded-resource";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class RaceService {
   constructor(private http: HttpClient) {
   }
 
-  findAllRaces(): Observable<Race[]> {
-    return this.http.get<Race[]>('api/races');
+  findAllRaces(): Observable<EmbeddedResource<Race[]>> {
+    return this.http.get<EmbeddedResource<Race[]>>('api/races');
   }
 
   findRace(id: number): Observable<Race> {
@@ -32,7 +33,7 @@ export class RaceService {
     }
   }
 
-  findAllTracks(): Observable<Track[]> {
-    return this.http.get<Track[]>('api/tracks');
+  findAllTracks(): Observable<EmbeddedResource<Track[]>> {
+    return this.http.get<EmbeddedResource<Track[]>>('api/tracks');
   }
 }

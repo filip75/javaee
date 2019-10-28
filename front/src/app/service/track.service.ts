@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Track} from "../model/track";
+import {EmbeddedResource} from "../model/embedded-resource";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class TrackService {
   constructor(private http: HttpClient) {
   }
 
-  findAllTracks(): Observable<Track[]> {
-    return this.http.get<Track[]>('api/tracks');
+  findAllTracks(): Observable<EmbeddedResource<Track[]>> {
+    return this.http.get<EmbeddedResource<Track[]>>('api/tracks');
   }
 
   findTrack(id: number): Observable<Track> {
