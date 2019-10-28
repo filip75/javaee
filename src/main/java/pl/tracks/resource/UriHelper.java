@@ -54,4 +54,13 @@ public class UriHelper {
                 .queryParam("page", page)
                 .build(params);
     }
+
+    public static URI pagedLimitUri(UriInfo info, Class<?> clazz, String method, int page, int limit, Object... params) {
+        return info.getBaseUriBuilder()
+                .path(clazz)
+                .path(clazz, method)
+                .queryParam("page", page)
+                .queryParam("limit", limit)
+                .build(params);
+    }
 }

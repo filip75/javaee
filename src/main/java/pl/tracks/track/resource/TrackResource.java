@@ -12,7 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
 
-import static pl.tracks.resource.UriHelper.pagedUri;
+import static pl.tracks.resource.UriHelper.pagedLimitUri;
 import static pl.tracks.resource.UriHelper.uri;
 
 @Path("tracks")
@@ -42,19 +42,19 @@ public class TrackResource {
                 .embedded("tracks", tracks);
 
         builder.link("self",
-                Link.builder().href(pagedUri(info, TrackResource.class, "getAllTracks", page)).build());
+                Link.builder().href(pagedLimitUri(info, TrackResource.class, "getAllTracks", page, limit)).build());
         builder.link("first",
-                Link.builder().href(pagedUri(info, TrackResource.class, "getAllTracks", 0)).build());
+                Link.builder().href(pagedLimitUri(info, TrackResource.class, "getAllTracks", 0, limit)).build());
         builder.link("last",
-                Link.builder().href(pagedUri(info, TrackResource.class, "getAllTracks", Math.max(pageCount - 1, 0))).build());
+                Link.builder().href(pagedLimitUri(info, TrackResource.class, "getAllTracks", Math.max(pageCount - 1, 0), limit)).build());
 
         if (page < pageCount - 1) {
             builder.link("next",
-                    Link.builder().href(pagedUri(info, TrackResource.class, "getAllTracks", page + 1)).build());
+                    Link.builder().href(pagedLimitUri(info, TrackResource.class, "getAllTracks", page + 1, limit)).build());
         }
         if (page > 0) {
             builder.link("previous",
-                    Link.builder().href(pagedUri(info, TrackResource.class, "getAllTracks", page - 1)).build());
+                    Link.builder().href(pagedLimitUri(info, TrackResource.class, "getAllTracks", page - 1, limit)).build());
         }
 
         builder.link("addTrack",
