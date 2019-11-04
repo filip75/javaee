@@ -26,12 +26,11 @@ public class RaceConverter implements Converter<Race> {
             return null;
         }
         return service.findRace(Integer.parseInt(s));
-
     }
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Race race) {
-        if (race == null) {
+        if (race == null || race.getId() == null) {
             return "";
         }
         return Integer.toString(race.getId());

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="race" value="#{driverEdit.driver}" required="false"/>
+    </f:metadata>
+    <ui:define name="content">
+        <h:form styleClass="m-4">
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Imię" for="firstName"/>
+                <h:inputText id="firstName" value="#{driverEdit.driver.firstName}"/>
+                <h:message for="firstName"/>
+
+                <h:outputLabel value="Nazwisko" for="lastName"/>
+                <h:inputText id="lastName" value="#{driverEdit.driver.lastName}"/>
+                <h:message for="lastName"/>
+
+                <h:outputLabel value="Data urodzenia" for="dateOfBirth"/>
+                <h:inputText id="dateOfBirth" value="#{driverEdit.driver.dateOfBirth}">
+                    <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+                </h:inputText>
+                <h:message for="dateOfBirth"/>
+
+                <h:commandButton value="Zapisz" action="#{driverEdit.saveDriver}" styleClass="btn btn-outline-info mx-4"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

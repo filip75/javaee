@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <h:dataTable value="#{driverList.drivers}" var="driver" class="table">
+            <h:column>
+                <f:facet name="header">id</f:facet>
+                <h:outputText value="#{driver.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Imię</f:facet>
+                <h:outputText value="#{driver.firstName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nazwisko</f:facet>
+                <h:outputText value="#{driver.lastName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Data urodzenia</f:facet>
+                <h:outputText value="#{driver.dateOfBirth}"/>
+            </h:column>
+            <h:column>
+                <h:link outcome="driver_edit.xhtml" value="Edytuj" class="btn btn-outline-info">
+                    <f:param name="race" value="#{driver.id}"/>
+                </h:link>
+            </h:column>
+            <h:column>
+                <h:form>
+                    <h:commandButton value="Usuń" action="#{driverList.removeDriver(driver)}"
+                                     class="btn btn-outline-danger"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:link outcome="driver_create.xhtml" value="Dodaj kierowcę" class="btn btn-outline-info mx-4"/>
+    </ui:define>
+</ui:composition>

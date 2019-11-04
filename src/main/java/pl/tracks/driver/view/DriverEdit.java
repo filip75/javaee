@@ -1,9 +1,9 @@
-package pl.tracks.track.view;
+package pl.tracks.driver.view;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.tracks.driver.model.Driver;
 import pl.tracks.race.RaceService;
-import pl.tracks.track.model.Track;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -12,20 +12,20 @@ import java.io.Serializable;
 
 @Named
 @ViewScoped
-public class TrackEdit implements Serializable {
+public class DriverEdit implements Serializable {
     private RaceService service;
 
     @Setter
     @Getter
-    private Track track;
+    private Driver driver;
 
     @Inject
-    public TrackEdit(RaceService service) {
+    public DriverEdit(RaceService service) {
         this.service = service;
     }
 
-    public String saveTrack() {
-        service.saveTrack(track);
-        return "track_list?faces-redirect=true";
+    public String saveDriver() {
+        service.saveDriver(driver);
+        return "driver_list?faces-redirect=true";
     }
 }

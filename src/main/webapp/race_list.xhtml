@@ -4,37 +4,54 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/WEB-INF/templates/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="track" value="#{raceList.track}" required="false"/>
+    </f:metadata>
+
     <ui:define name="content">
-        <h:dataTable value="#{raceList.races}" var="race" class="table">
+        <h:dataTable value="#{raceList.races}" var="driver" class="table">
             <h:column>
                 <f:facet name="header">id</f:facet>
-                <h:outputText value="#{race.id}"/>
+                <h:outputText value="#{driver.id}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">Nazwa wyścigu</f:facet>
-                <h:outputText value="#{race.name}"/>
+                <h:outputText value="#{driver.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">data</f:facet>
-                <h:outputText value="#{race.date}"/>
+                <h:outputText value="#{driver.date}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">Tor</f:facet>
-                <h:outputText value="#{race.track.name}"/>
+                <h:outputText value="#{driver.track.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Kierowcy</f:facet>
+                <ui:repeat value="#{driver.drivers}" var="driver">
+                    <p>#{driver.firstName} #{driver.lastName}</p>
+                </ui:repeat>
             </h:column>
             <h:column>
                 <h:link outcome="race_edit.xhtml" value="Edytuj" class="btn btn-outline-info">
-                    <f:param name="race" value="#{race.id}"/>
+                    <f:param name="race" value="#{driver.id}"/>
                 </h:link>
             </h:column>
             <h:column>
                 <h:form>
-                    <h:commandButton value="Usuń" action="#{raceList.removeRace(race)}"
+                    <h:commandButton value="Usuń" action="#{raceList.removeRace(driver)}"
                                      class="btn btn-outline-danger"/>
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link outcome="race_edit.xhtml" value="Dodaj tor" class="btn btn-outline-info mx-4"/>
-        <h:link outcome="race_create.xhtml" value="Dodaj tor 2" class="btn btn-outline-info mx-4"/>
+        <h:form>
+            <h:selectOneMenu id="track" value="#{raceList.track}" collectionType="java.util.ArrayList">
+                <f:selectItems value="#{raceList.availableTracks}" var="track" itemValue="#{track}"
+                               itemLabel="#{track.name}"/>
+            </h:selectOneMenu>
+            <h:commandButton value="Filtruj" styleClass="btn btn-outline-info mx-4"/>
+        </h:form>
+        <h:link outcome="race_create.xhtml" value="Dodaj wyścig" class="btn btn-outline-info mx-4"/>
     </ui:define>
 </ui:composition>

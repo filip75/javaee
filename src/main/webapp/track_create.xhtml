@@ -5,7 +5,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-        <h:form  styleClass="m-4">
+        <h:form styleClass="m-4">
             <h:panelGrid columns="3">
                 <h:outputLabel value="Nazwa" for="name"/>
                 <h:inputText id="name" value="#{trackCreate.track.name}"/>
@@ -13,16 +13,16 @@
 
                 <h:outputLabel value="długość" for="latitude"/>
                 <h:inputText id="latitude" value="#{trackCreate.track.latitude}">
-                    <f:convertNumber minFractionDigits="2" />
+                    <f:convertNumber minFractionDigits="2"/>
                 </h:inputText>
                 <h:message for="latitude"/>
 
                 <h:outputLabel value="szerokość" for="latitude"/>
                 <h:inputText id="longitude" value="#{trackCreate.track.longitude}">
-                    <f:convertNumber minFractionDigits="2" />
+                    <f:convertNumber minFractionDigits="2"/>
                 </h:inputText>
                 <h:message for="latitude"/>
-                <h:commandButton value="Zapisz" action="#{trackCreate.saveTrack}" styleClass="btn btn-outline-info"/>
+                <h:commandButton value="Zapisz" action="#{trackCreate.saveTrack}" styleClass="btn btn-outline-info mx-4"/>
             </h:panelGrid>
         </h:form>
     </ui:define>

@@ -2,53 +2,60 @@ package pl.tracks.race.model;
 
 import lombok.*;
 import pl.tracks.driver.model.Driver;
-import pl.tracks.resource.model.Link;
 import pl.tracks.track.model.Track;
 
-import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@AllArgsConstructor
+
 @NoArgsConstructor
 @EqualsAndHashCode
-@ToString
+@ToString(exclude = {"drivers"})
+@Entity
+@NamedQuery(name = Race.Queries.FIND_ALL, query = "select r from Race r")
+@NamedQuery(name = Race.Queries.FIND_BY_TRACK, query = "select r from Race r where :track = r.track")
 public class Race implements Serializable {
-    private int id;
+
+    public static class Queries {
+        public static final String FIND_ALL = "Race.findAll";
+        public static final String FIND_BY_TRACK = "Race.findByTrack";
+    }
+
+    @Id
+    @GeneratedValue
+    @Getter
+    private Integer id;
+
+    @Getter
+    @Setter
+    @NotNull
     private LocalDate date;
+
+    @Getter
+    @Setter
+    @NotBlank
     private String name;
+
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     private Track track;
-    @JsonbTransient
+
+    @Getter
+    @Setter
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Driver> drivers = new ArrayList<>();
-    @JsonbProperty("_links")
-    private Map<String, Link> links = new HashMap<>();
 
-    @JsonbTransient
-    public Track getTrack(){
-        return track;
-    }
 
-    public Race(Race race) {
-        this.id = race.id;
-        this.date = race.date;
-        this.name = race.name;
-        this.track = race.track;
-        this.drivers = race.drivers.stream().map(Driver::new).collect(Collectors.toList());
-    }
-
-    public Race(int id, LocalDate date, String name, Track track, List<Driver> drivers) {
-        this.id = id;
+    public Race(LocalDate date, String name, Track track) {
         this.date = date;
         this.name = name;
         this.track = track;
-        this.drivers = drivers;
     }
 }

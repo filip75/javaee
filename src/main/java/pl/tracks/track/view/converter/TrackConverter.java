@@ -31,7 +31,7 @@ public class TrackConverter implements Converter<Track> {
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Track track) {
-        if (track == null) {
+        if (track == null || track.getId() == null) {
             return "";
         }
         return Integer.toString(track.getId());

@@ -8,7 +8,7 @@
         <f:viewParam name="race" value="#{raceEdit.race}" required="false"/>
     </f:metadata>
     <ui:define name="content">
-        <h:form  styleClass="m-4">
+        <h:form styleClass="m-4">
             <h:panelGrid columns="3">
                 <h:outputLabel value="Nazwa" for="name"/>
                 <h:inputText id="name" value="#{raceEdit.race.name}"/>
@@ -21,11 +21,17 @@
                 <h:message for="date"/>
 
                 <h:outputLabel value="Tor" for="track"/>
-                <h:selectOneMenu id="track" value="#{raceEdit.race.track}">
+                <h:selectOneListbox id="track" value="#{raceEdit.race.track}" collectionType="java.util.ArrayList">
                     <f:selectItems value="#{raceEdit.availableTracks}" var="track" itemValue="#{track}"
                                    itemLabel="#{track.name}"/>
-                </h:selectOneMenu>
+                </h:selectOneListbox>
                 <h:message for="track"/>
+                <h:outputLabel value="Kierowcy" for="drivers"/>
+                <h:selectManyListbox id="drivers" value="#{raceEdit.race.drivers}" collectionType="java.util.ArrayList">
+                    <f:selectItems value="#{raceEdit.availableDrivers}" var="driver" itemValue="#{driver}"
+                                   itemLabel="#{driver.firstName} #{driver.lastName}"/>
+                </h:selectManyListbox>
+                <h:message for="drivers"/>
                 <h:commandButton value="Zapisz" action="#{raceEdit.saveRace}" styleClass="btn btn-outline-info mx-4"/>
             </h:panelGrid>
         </h:form>

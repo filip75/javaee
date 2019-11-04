@@ -18,12 +18,18 @@
                 <h:message for="date"/>
 
                 <h:outputLabel value="Tor" for="track"/>
-                <h:selectOneMenu id="track" value="#{raceCreate.race.track}">
+                <h:selectOneListbox id="track" value="#{raceCreate.race.track}" collectionType="java.util.ArrayList">
                     <f:selectItems value="#{raceCreate.availableTracks}" var="track" itemValue="#{track}"
                                    itemLabel="#{track.name}"/>
-                </h:selectOneMenu>
+                </h:selectOneListbox>
                 <h:message for="track"/>
-                <h:commandButton value="Zapisz" action="#{raceCreate.saveRace}" styleClass="btn btn-outline-info"/>
+                <h:outputLabel value="Kierowcy" for="drivers"/>
+                <h:selectManyListbox id="drivers" value="#{raceCreate.race.drivers}" collectionType="java.util.ArrayList">
+                    <f:selectItems value="#{raceCreate.availableDrivers}" var="driver" itemValue="#{driver}"
+                                   itemLabel="#{driver.firstName} #{driver.lastName}"/>
+                </h:selectManyListbox>
+                <h:message for="drivers"/>
+                <h:commandButton value="Zapisz" action="#{raceCreate.saveRace}" styleClass="btn btn-outline-info mx-4"/>
             </h:panelGrid>
         </h:form>
     </ui:define>

@@ -2,16 +2,15 @@ package pl.tracks.race.view;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.tracks.driver.model.Driver;
 import pl.tracks.race.RaceService;
 import pl.tracks.race.model.Race;
 import pl.tracks.track.model.Track;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -28,20 +27,19 @@ public class RaceEdit implements Serializable {
         this.service = service;
     }
 
-    @PostConstruct
-    public void init() {
-        race = new Race();
-    }
-
     public String saveRace() {
-        if (race.getDrivers() == null) {
-            race.setDrivers(new ArrayList<>());
+        if (race == null) {
+            race = new Race();
         }
         service.saveRace(race);
         return "race_list?faces-redirect=true";
     }
 
     public List<Track> getAvailableTracks() {
-        return service.findAllTracks(0, 2);
+        return service.findAllTracks();
+    }
+
+    public List<Driver> getAvailableDrivers() {
+        return service.findAllDrivers();
     }
 }

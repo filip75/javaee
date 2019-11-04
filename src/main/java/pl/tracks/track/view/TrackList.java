@@ -19,13 +19,18 @@ public class TrackList {
     }
 
     public List<Track> getTracks() {
-        return service.findAllTracks(0,2);
+        return service.findAllTracks();
     }
 
     public String removeTrack(Track track) {
-        if (service.removeTrack(track)) {
-            //            TODO
+        if (track.getRaces().size() == 0) {
+            service.removeTrack(track);
         }
+        return "track_list?faces-redirect=true";
+    }
+
+    public String init() {
+        service.init();
         return "track_list?faces-redirect=true";
     }
 }

@@ -34,7 +34,10 @@
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link outcome="track_edit.xhtml" value="Dodaj tor" class="btn btn-outline-info mx-4"/>
-        <h:link outcome="track_create.xhtml" value="Dodaj tor 2" class="btn btn-outline-info mx-4"/>
+        <h:link outcome="track_create.xhtml" value="Dodaj tor" class="btn btn-outline-info mx-4"/>
+
+        <h:form>
+            <h:commandButton action="#{trackList.init}" class="btn btn-outline-info mx-4 mt-4" value="Init"/>
+        </h:form>
     </ui:define>
 </ui:composition>

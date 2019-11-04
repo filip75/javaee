@@ -1,45 +1,55 @@
 package pl.tracks.track.model;
 
 import lombok.*;
-import pl.tracks.resource.model.Link;
+import pl.tracks.race.model.Race;
 
-import javax.json.bind.annotation.JsonbProperty;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-//@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = {"races"})
+@ToString(exclude = {"races"})
+@Entity
+@NamedQuery(name = Track.Queries.FIND_ALL, query = "select t from Track t")
 public class Track implements Serializable {
-    private int id;
-    private String name;
-    private double latitude;
-    private double longitude;
-    @JsonbProperty("_links")
-    private Map<String, Link> links = new HashMap<>();
 
-    public Track(int id, String name, double latitude, double longitude) {
-        this.id = id;
+    public static class Queries {
+        public static final String FIND_ALL = "Track.findAll";
+    }
+
+    @Id
+    @GeneratedValue
+    @Getter
+    private Integer id;
+
+    @Getter
+    @Setter
+    @NotBlank
+    private String name;
+
+    @Getter
+    @Setter
+    @NotNull
+    private double latitude;
+
+    @Getter
+    @Setter
+    @NotNull
+    private double longitude;
+
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "track", fetch = FetchType.EAGER)
+    private List<Race> races = new ArrayList<>();
+
+    public Track(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public Track() {
-        id = 0;
-        name = "";
-        latitude = 0.0;
-        longitude = 0.0;
-    }
-
-    public Track(Track track) {
-        this.id = track.id;
-        this.name = track.name;
-        this.latitude = track.latitude;
-        this.longitude = track.longitude;
     }
 }

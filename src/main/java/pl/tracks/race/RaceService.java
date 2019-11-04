@@ -4,162 +4,157 @@ import pl.tracks.driver.model.Driver;
 import pl.tracks.race.model.Race;
 import pl.tracks.track.model.Track;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class RaceService {
 
-    private final List<Track> tracks = new ArrayList<>();
-    private final List<Race> races = new ArrayList<>();
-    private final List<Driver> drivers = new ArrayList<>();
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @PostConstruct
-    private void init() {
-        tracks.add(new Track(1, "Silverstone", 52.074, -1.017));
-        tracks.add(new Track(2, "Monza", 45.580, 9.273));
-        tracks.add(new Track(3, "Monza", 45.580, 9.273));
-        tracks.add(new Track(4, "Monza", 45.580, 9.273));
-        tracks.add(new Track(5, "Monza", 45.580, 9.273));
-        tracks.add(new Track(6, "Monza", 45.580, 9.273));
-        tracks.add(new Track(7, "Monza", 45.580, 9.273));
-        tracks.add(new Track(8, "Monza", 45.580, 9.273));
+    @Transactional
+    public void init() {
+        Track silverstone = new Track("Silverstone", 52.074, -1.017);
+        Track monza = new Track("Monza", 45.580, 9.273);
+        Track monaco = new Track("Monaco", 22.23, 11.273);
 
-        Race silverstone2019 = new Race(1,
-                LocalDate.of(2019, Calendar.JUNE, 21),
+        entityManager.persist(silverstone);
+        entityManager.persist(monza);
+        entityManager.persist(monaco);
+
+        Race silverstone2019 = new Race(LocalDate.of(2019, Calendar.JUNE, 21),
                 "2019 British Grand Prix",
-                this.tracks.get(0),
-                new ArrayList<>());
-        races.add(silverstone2019);
-
-        Race silverstone2018 = new Race(2,
-                LocalDate.of(2018, Calendar.JUNE, 18),
+                silverstone);
+        Race silverstone2018 = new Race(LocalDate.of(2018, Calendar.JUNE, 18),
                 "2018 British Grand Prix",
-                this.tracks.get(0),
-                new ArrayList<>());
-        races.add(silverstone2018);
-
-        Race monza2019 = new Race(3,
-                LocalDate.of(2019, Calendar.SEPTEMBER, 11),
+                silverstone);
+        Race monza2019 = new Race(LocalDate.of(2019, Calendar.SEPTEMBER, 11),
                 "2019 Italian Grand Prix",
-                this.tracks.get(1),
-                new ArrayList<>());
-        races.add(monza2019);
+                monza);
 
-        Driver hamilton = new Driver(0, "Lewis", "Hamilton", LocalDate.of(1980, Calendar.FEBRUARY, 1));
-        Driver vettel = new Driver(1, "Sebastian", "Vettel", LocalDate.of(1980, Calendar.FEBRUARY, 2));
-        Driver schumacher = new Driver(2, "Michael", "Schumacher", LocalDate.of(1980, Calendar.FEBRUARY, 2));
-        Driver senna = new Driver(3, "Ayrton", "Senna", LocalDate.of(1980, Calendar.FEBRUARY, 3));
-        Driver bottas = new Driver(4, "Valteri", "Bottas", LocalDate.of(1980, Calendar.FEBRUARY, 4));
-        Driver ricciardo = new Driver(5, "Daniel", "Ricciardo", LocalDate.of(1980, Calendar.FEBRUARY, 5));
-        drivers.add(hamilton);
-        drivers.add(vettel);
-        drivers.add(schumacher);
-        drivers.add(senna);
-        drivers.add(bottas);
-        drivers.add(ricciardo);
-        silverstone2018.getDrivers().addAll(drivers);
-        silverstone2019.getDrivers().addAll(drivers);
+        Driver hamilton = new Driver("Lewis", "Hamilton", LocalDate.of(1980, Calendar.FEBRUARY, 1));
+        Driver vettel = new Driver("Sebastian", "Vettel", LocalDate.of(1980, Calendar.FEBRUARY, 2));
+        Driver schumacher = new Driver("Michael", "Schumacher", LocalDate.of(1980, Calendar.FEBRUARY, 2));
+        Driver senna = new Driver("Ayrton", "Senna", LocalDate.of(1980, Calendar.FEBRUARY, 3));
+        Driver bottas = new Driver("Valteri", "Bottas", LocalDate.of(1980, Calendar.FEBRUARY, 4));
+        Driver ricciardo = new Driver("Daniel", "Ricciardo", LocalDate.of(1980, Calendar.FEBRUARY, 5));
+
+        entityManager.persist(hamilton);
+        entityManager.persist(vettel);
+        entityManager.persist(schumacher);
+        entityManager.persist(senna);
+        entityManager.persist(bottas);
+        entityManager.persist(ricciardo);
+
+        silverstone2019.getDrivers().add(hamilton);
+        silverstone2019.getDrivers().add(vettel);
+        silverstone2019.getDrivers().add(schumacher);
+        silverstone2019.getDrivers().add(ricciardo);
+        silverstone2019.getDrivers().add(bottas);
+
+        entityManager.persist(silverstone2019);
+        entityManager.persist(silverstone2018);
+        entityManager.persist(monza2019);
+
+
     }
 
-    public synchronized List<Track> findAllTracks(int offset, int limit) {
-        return tracks.stream().skip(offset).limit(limit).map(Track::new).collect(Collectors.toList());
+    public List<Track> findAllTracks() {
+        return entityManager.createNamedQuery(Track.Queries.FIND_ALL, Track.class).getResultList();
     }
 
-    public synchronized Track findTrack(int id) {
-        return tracks.stream().filter(track -> track.getId() == id).findFirst().map(Track::new).orElse(null);
+    public Track findTrack(int id) {
+        return entityManager.find(Track.class, id);
     }
 
-    public synchronized void saveTrack(Track track) {
-        if (track.getId() != 0) {
-            tracks.removeIf(t -> t.getId() == track.getId());
-            tracks.add(track);
-            races.stream().filter(r -> r.getTrack().getId() == track.getId()).forEach(r -> r.setTrack(track));
+    @Transactional
+    public void saveTrack(Track track) {
+        if (track.getId() == null) {
+            entityManager.persist(track);
         } else {
-            track.setId(tracks.stream().mapToInt(Track::getId).max().orElse(0) + 1);
-            tracks.add(track);
+            entityManager.merge(track);
         }
     }
 
-    public synchronized boolean removeTrack(Track track) {
-        Race race = races.stream().filter(r -> r.getTrack().equals(track)).findFirst().orElse(null);
-        if (race == null) {
-            return tracks.removeIf(t -> t.equals(track));
-        }
-        return false;
+    @Transactional
+    public void removeTrack(Track track) {
+        entityManager.remove(entityManager.merge(track));
     }
 
-    public List<Race> getTrackRaces(Track track){
-        return races.stream().filter(race -> race.getTrack().equals(track)).map(Race::new).collect(Collectors.toList());
+//    public List<Race> getTrackRaces(Track track) {
+//        return races.stream().filter(race -> race.getTrack().equals(track)).map(Race::new).collect(Collectors.toList());
+//    }
+//
+//    public int countTracks() {
+//        return tracks.size();
+//    }
+
+    public List<Race> findAllRaces() {
+        return entityManager.createNamedQuery(Race.Queries.FIND_ALL, Race.class).getResultList();
     }
 
-    public int countTracks() {
-        return tracks.size();
-    }
-
-    public synchronized List<Race> findAllRaces(int offset, int limit) {
-        return races.stream().skip(offset).limit(limit).map(Race::new).collect(Collectors.toList());
-    }
-
-    public synchronized Race findRace(int id) {
-        return races.stream().filter(race -> race.getId() == id).findFirst().map(Race::new).orElse(null);
+    public List<Race> findAllRacesByTrack(Track track) {
+        return entityManager.createNamedQuery(Race.Queries.FIND_BY_TRACK, Race.class)
+                .setParameter("track", track)
+                .getResultList();
     }
 
 
+    public Race findRace(int id) {
+        return entityManager.find(Race.class, id);
+    }
+
+    @Transactional
     public synchronized void saveRace(Race race) {
-        if (race.getDrivers() == null) {
-            race.setDrivers(new ArrayList<>());
-        }
-        if (race.getId() != 0) {
-            races.removeIf(r -> r.getId() == race.getId());
-            races.add(race);
+        if (race.getId() == null) {
+            entityManager.persist(race);
         } else {
-            race.setId(races.stream().mapToInt(Race::getId).max().orElse(0) + 1);
-            races.add(race);
+            entityManager.merge(race);
         }
     }
 
-    public synchronized boolean removeRace(Race race) {
-        return races.removeIf(r -> r.equals(race));
+    @Transactional
+    public void removeRace(Race race) {
+        entityManager.remove(entityManager.merge(race));
     }
 
-    public int countRaces() {
-        return races.size();
+//    public int countRaces() {
+//        return races.size();
+//    }
+
+    public List<Driver> findAllDrivers() {
+        return entityManager.createNamedQuery(Driver.Queries.FIND_ALL, Driver.class).getResultList();
     }
 
-    public synchronized List<Driver> findAllDrivers(int offset, int limit) {
-        return drivers.stream().skip(offset).limit(limit).map(Driver::new).collect(Collectors.toList());
+    public Driver findDriver(int id) {
+        return entityManager.find(Driver.class, id);
     }
 
-    public synchronized Driver findDriver(int id) {
-        return drivers.stream().filter(driver -> driver.getId() == id).findFirst().map(Driver::new).orElse(null);
-    }
-
-
-    public synchronized void saveDriver(Driver driver) {
-        if (driver.getId() != 0) {
-            drivers.removeIf(d -> d.getId() == driver.getId());
-            drivers.add(driver);
+    @Transactional
+    public void saveDriver(Driver driver) {
+        if (driver.getId() == null) {
+            entityManager.persist(driver);
         } else {
-            driver.setId(drivers.stream().mapToInt(Driver::getId).max().orElse(0) + 1);
-            drivers.add(driver);
+            entityManager.merge(driver);
         }
     }
 
-    public synchronized boolean removeDriver(Driver driver) {
-        return drivers.removeIf(d -> d.equals(driver));
+    @Transactional
+    public void removeDriver(Driver driver) {
+        entityManager.remove(entityManager.merge(driver));
     }
 
-    public List<Race> getDriverRaces(Driver driver) {
-        return races.stream().filter(r -> r.getDrivers().stream().anyMatch(d -> d.equals(driver))).map(Race::new).collect(Collectors.toList());
-    }
-
-    public int countDrivers() {
-        return drivers.size();
-    }
+//    public List<Race> getDriverRaces(Driver driver) {
+//        return races.stream().filter(r -> r.getDrivers().stream().anyMatch(d -> d.equals(driver))).map(Race::new).collect(Collectors.toList());
+//    }
+//
+//    public int countDrivers() {
+//        return drivers.size();
+//    }
 }
